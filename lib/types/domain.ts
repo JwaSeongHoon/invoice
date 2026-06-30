@@ -1,4 +1,11 @@
-import type { AllocBasis, Currency, MatchMethod, MatchStatus } from "@/lib/types/enums";
+import type {
+  AllocBasis,
+  Currency,
+  FxSource,
+  MatchMethod,
+  MatchStatus,
+  ValidationType,
+} from "@/lib/types/enums";
 
 /**
  * 처리 파이프라인 도메인 타입 (업로드 → 분류 → OCR → 매칭 → 안분)
@@ -159,4 +166,47 @@ export interface ItemAllocation {
   unit_price_krw: number;
   supply_amount: number;
   vat: number;
+}
+
+/** 안분·환산 결과 행 (POST /api/allocate 응답, F011~F014) — UI 렌더용 */
+export interface AllocationRow {
+  inventory_item_id: string;
+  /** 한글 품목명 */
+  item_name: string;
+  qty: number;
+  currency: Currency;
+  /** 입고일 기준 적용 환율 */
+  fx_rate: number;
+  /** 역산 보정된 외화단가(USD) */
+  unit_price_fx_adjusted: number;
+  unit_price_krw: number;
+  supply_amount: number;
+  vat: number;
+  freight: number;
+  fee: number;
+  etc_amount: number;
+  alloc_basis: AllocBasis;
+}
+
+/** 검증 결과 요약 (validation_log 1건, F005/F011/F013) */
+export interface ValidationSummary {
+  type: ValidationType;
+  passed: boolean;
+  expected: number | null;
+  actual: number | null;
+}
+
+/** 적용 환율 출처 요약 (F012) */
+export interface FxSourceSummary {
+  currency: Currency;
+  quote_date: string;
+  rate: number;
+  source: FxSource;
+}
+
+/** POST /api/allocate 응답 (F011~F014, AC-03) */
+export interface AllocateResponse {
+  rows: AllocationRow[];
+  validations: ValidationSummary[];
+  fxSources: FxSourceSummary[];
 }
