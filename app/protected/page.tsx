@@ -27,6 +27,22 @@ const STATUS_LABEL: Record<
   error: { label: "오류", variant: "destructive" },
 };
 
+/**
+ * 배치 상태별 재진입 경로 — 마지막 진행 단계 페이지로 복귀시킨다.
+ * BatchStatus enum(PRD 8장)에 별도 안분(allocate) 상태가 없으므로 안분 완료는 done에 흡수되어 결과 페이지로 보낸다.
+ */
+function reentryPath(status: BatchStatus, batchId: string): string {
+  switch (status) {
+    case "matching":
+      return `/protected/match/${batchId}`;
+    case "done":
+      return `/protected/result/${batchId}`;
+    default:
+      // uploading · processing · error → 처리 진행 페이지
+      return `/protected/process/${batchId}`;
+  }
+}
+
 export default async function ProtectedPage() {
   const supabase = await createClient();
   const { data, error } = await supabase.auth.getClaims();
@@ -64,6 +80,7 @@ export default async function ProtectedPage() {
             <TableRow>
               <TableHead>생성일</TableHead>
               <TableHead>B/L번호</TableHead>
+              <TableHead className="text-right">처리 건수</TableHead>
               <TableHead>상태</TableHead>
               <TableHead className="text-right">작업</TableHead>
             </TableRow>
@@ -74,13 +91,18 @@ export default async function ProtectedPage() {
               return (
                 <TableRow key={batch.id}>
                   <TableCell>{new Date(batch.created_at).toLocaleDateString("ko-KR")}</TableCell>
-                  <TableCell className="text-muted-foreground">—</TableCell>
+                  <TableCell className={batch.bl_no ? "" : "text-muted-foreground"}>
+                    {batch.bl_no ?? "—"}
+                  </TableCell>
+                  <TableCell className="text-right tabular-nums">
+                    {batch.itemCount.toLocaleString("ko-KR")}
+                  </TableCell>
                   <TableCell>
                     <Badge variant={status.variant}>{status.label}</Badge>
                   </TableCell>
                   <TableCell className="text-right">
                     <Button asChild variant="ghost" size="sm">
-                      <Link href={`/protected/process/${batch.id}`}>열기</Link>
+                      <Link href={reentryPath(batch.status as BatchStatus, batch.id)}>열기</Link>
                     </Button>
                   </TableCell>
                 </TableRow>
