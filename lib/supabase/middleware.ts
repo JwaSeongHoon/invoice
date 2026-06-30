@@ -39,11 +39,15 @@ export async function updateSession(request: NextRequest) {
   const { data } = await supabase.auth.getClaims();
   const user = data?.claims;
 
+  // /api 요청은 HTML 로그인 페이지로 리디렉션하지 않는다.
+  // 각 Route Handler가 자체적으로 getClaims로 인증을 검사해 401 JSON을 반환하므로
+  // (fetch가 리디렉션을 따라가 HTML을 받으면 res.json() 파싱이 깨져 오작동함)
   if (
     request.nextUrl.pathname !== "/" &&
     !user &&
     !request.nextUrl.pathname.startsWith("/login") &&
-    !request.nextUrl.pathname.startsWith("/auth")
+    !request.nextUrl.pathname.startsWith("/auth") &&
+    !request.nextUrl.pathname.startsWith("/api")
   ) {
     const url = request.nextUrl.clone();
     url.pathname = "/auth/login";
