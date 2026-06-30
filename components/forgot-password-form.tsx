@@ -38,9 +38,9 @@ export function ForgotPasswordForm({ className, ...props }: React.ComponentProps
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       {success ? (
-        <Card>
+        <Card className="border-t-brand border-t-2">
           <CardHeader>
-            <CardTitle className="text-2xl">이메일을 확인하세요</CardTitle>
+            <CardTitle className="font-heading text-2xl">이메일을 확인하세요</CardTitle>
             <CardDescription>비밀번호 재설정 안내 발송됨</CardDescription>
           </CardHeader>
           <CardContent>
@@ -50,9 +50,9 @@ export function ForgotPasswordForm({ className, ...props }: React.ComponentProps
           </CardContent>
         </Card>
       ) : (
-        <Card>
+        <Card className="border-t-brand border-t-2">
           <CardHeader>
-            <CardTitle className="text-2xl">비밀번호 재설정</CardTitle>
+            <CardTitle className="font-heading text-2xl">비밀번호 재설정</CardTitle>
             <CardDescription>
               이메일을 입력하시면 비밀번호 재설정 링크를 보내드립니다
             </CardDescription>

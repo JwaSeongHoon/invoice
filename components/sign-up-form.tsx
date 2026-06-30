@@ -62,9 +62,9 @@ export function SignUpForm({ className, ...props }: React.ComponentPropsWithoutR
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card>
+      <Card className="border-t-brand border-t-2">
         <CardHeader>
-          <CardTitle className="text-2xl">회원가입</CardTitle>
+          <CardTitle className="font-heading text-2xl">회원가입</CardTitle>
           <CardDescription>새 계정 만들기</CardDescription>
         </CardHeader>
         <CardContent>

@@ -18,11 +18,11 @@ import type { BatchStatus } from "@/lib/types/enums";
 /** 배치 상태 → 한국어 라벨·배지 색상 */
 const STATUS_LABEL: Record<
   BatchStatus,
-  { label: string; variant: "default" | "secondary" | "destructive" }
+  { label: string; variant: "default" | "secondary" | "brand" | "destructive" }
 > = {
   uploading: { label: "업로드 중", variant: "secondary" },
-  processing: { label: "처리 중", variant: "secondary" },
-  matching: { label: "매칭 중", variant: "secondary" },
+  processing: { label: "처리 중", variant: "brand" },
+  matching: { label: "매칭 중", variant: "brand" },
   done: { label: "완료", variant: "default" },
   error: { label: "오류", variant: "destructive" },
 };
@@ -56,8 +56,8 @@ export default async function ProtectedPage() {
     <div className="flex w-full flex-1 flex-col gap-8">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold">배치 목록</h1>
-          <p className="text-muted-foreground mt-1 text-sm">처리된 수입정산 배치 목록입니다.</p>
+          <h1 className="font-heading text-3xl font-bold tracking-tight">배치 목록</h1>
+          <p className="text-muted-foreground mt-2 text-sm">처리된 수입정산 배치 목록입니다.</p>
         </div>
         <Button asChild>
           <Link href="/protected/upload">새 정산 처리</Link>

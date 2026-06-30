@@ -35,10 +35,10 @@ export function UpdatePasswordForm({ className, ...props }: React.ComponentProps
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card>
+      <Card className="border-t-brand border-t-2">
         <CardHeader>
-          <CardTitle className="text-2xl">Reset Your Password</CardTitle>
-          <CardDescription>Please enter your new password below.</CardDescription>
+          <CardTitle className="font-heading text-2xl">비밀번호 재설정</CardTitle>
+          <CardDescription>새 비밀번호를 입력해 주세요.</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleForgotPassword}>
