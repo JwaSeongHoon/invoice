@@ -21,6 +21,15 @@
     "shadcn": {
       "command": "npx",
       "args": ["shadcn@latest", "mcp"]
+    },
+    "shrimp-task-manager": {
+      "command": "node",
+      "args": ["C:/claude-workspace/mcp-shrimp-task-manager/dist/index.js"],
+      "env": {
+        "DATA_DIR": "C:/claude-workspace/invoice-web/shrimp_data",
+        "TEMPLATES_USE": "en",
+        "ENABLE_GUI": "true"
+      }
     }
   }
 }

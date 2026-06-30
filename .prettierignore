@@ -24,5 +24,9 @@ public
 shrimp_data
 .husky
 
+# Test artifacts
+test-results
+playwright-report
+
 # Markdown (optional - remove if you want to format .md files)
 *.md
