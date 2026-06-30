@@ -1,16 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { ResultDownload, type ResultValidation } from "@/components/result-download";
 import { ecountCells, type EcountRowInput, type Cell } from "@/lib/export/build-ecount-xlsx";
-import type { ValidationType } from "@/lib/types/enums";
-
-/** 다운로드 게이트 검증 5종 (안분 합계는 3칸) */
-const REQUIRED_VALIDATIONS: ValidationType[] = [
-  "qty3541",
-  "unitprice",
-  "alloc_freight",
-  "alloc_fee",
-  "alloc_etc",
-];
+import { REQUIRED_VALIDATIONS } from "@/lib/types/constants";
 
 interface AllocRow {
   inventory_item_id: string;

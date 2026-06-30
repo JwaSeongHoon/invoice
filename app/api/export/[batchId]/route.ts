@@ -2,19 +2,10 @@ import { createClient } from "@/lib/supabase/server";
 import { NextResponse, type NextRequest } from "next/server";
 import { buildEcountXlsx, type EcountRowInput } from "@/lib/export/build-ecount-xlsx";
 import { buildValidationReport, type ReportValidation } from "@/lib/export/build-report";
-import { OCR_CONFIDENCE_THRESHOLD } from "@/lib/types/constants";
-import type { MatchMethod, ValidationType } from "@/lib/types/enums";
+import { OCR_CONFIDENCE_THRESHOLD, REQUIRED_VALIDATIONS } from "@/lib/types/constants";
+import type { MatchMethod } from "@/lib/types/enums";
 
 export const runtime = "nodejs";
-
-/** 다운로드 허용 게이트 — 검증 3종(㉟=㊶·단가 역산·안분 합계 3칸) 전부 통과 */
-const REQUIRED_VALIDATIONS: ValidationType[] = [
-  "qty3541",
-  "unitprice",
-  "alloc_freight",
-  "alloc_fee",
-  "alloc_etc",
-];
 
 interface AllocRow {
   inventory_item_id: string;

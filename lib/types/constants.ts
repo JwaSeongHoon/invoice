@@ -1,4 +1,4 @@
-import type { Currency } from "@/lib/types/enums";
+import type { Currency, ValidationType } from "@/lib/types/enums";
 
 /**
  * 업무 상수 정의 (단일 진실 공급원: docs/PRD.md 8장·F015)
@@ -72,3 +72,17 @@ export const AI_MATCH_GAP_THRESHOLD = 0.1;
 
 /** OCR 저신뢰 플래그 임계값 (confidence < 0.85) */
 export const OCR_CONFIDENCE_THRESHOLD = 0.85;
+
+/**
+ * 다운로드 허용 게이트 검증 5종 (단일 진실 — export route·result page 공용)
+ *
+ * 검증 3종(㉟=㊶ 수량·단가 역산·안분 합계)을 의미하며, 안분 합계는 운반비·수수료·기타 3칸으로
+ * 나뉘므로 총 5개 type이 모두 passed여야 이카운트 양식 다운로드를 허용한다(AC-01·AC-03·AC-05).
+ */
+export const REQUIRED_VALIDATIONS: ValidationType[] = [
+  "qty3541",
+  "unitprice",
+  "alloc_freight",
+  "alloc_fee",
+  "alloc_etc",
+];
