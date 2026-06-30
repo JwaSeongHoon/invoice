@@ -50,7 +50,9 @@ export async function POST(request: NextRequest) {
   let pageTexts: string[];
   try {
     pageTexts = await extractPdfPageTexts(pdfBuffer.slice());
-  } catch {
+  } catch (e) {
+    // 실제 원인을 Vercel 로그에 남긴다 (환경별 pdfjs 실패 진단용)
+    console.error("[ingest] PDF 텍스트 추출 실패:", e);
     return NextResponse.json(
       { error: "PDF를 읽을 수 없습니다. 파일을 확인해주세요." },
       { status: 400 }

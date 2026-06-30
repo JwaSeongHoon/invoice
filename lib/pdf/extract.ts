@@ -8,9 +8,12 @@
  */
 export async function extractPdfPageTexts(data: Uint8Array): Promise<string[]> {
   const { getDocument } = await import("pdfjs-dist/legacy/build/pdf.mjs");
+  // Vercel 서버리스(Linux Node)에는 시스템 폰트·canvas(Path2D)가 없다.
+  // 텍스트 레이어만 추출하므로 폰트 렌더링·eval을 모두 끄고 캔버스 의존을 피한다.
   const loadingTask = getDocument({
     data,
-    useSystemFonts: true,
+    useSystemFonts: false,
+    disableFontFace: true,
   });
   const doc = await loadingTask.promise;
 
