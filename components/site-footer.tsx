@@ -7,7 +7,7 @@ import { BrandLogo } from "@/components/brand-logo";
 export function SiteFooter() {
   return (
     <footer className="bg-foreground text-background mt-20 w-full">
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-4 px-5 py-10 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 px-5 py-10 sm:flex-row sm:items-center sm:justify-between">
         <BrandLogo size="sm" />
         <p className="text-background/60 text-xs">
           ⓒ {new Date().getFullYear()} 수입정산 매니저. All Rights Reserved.

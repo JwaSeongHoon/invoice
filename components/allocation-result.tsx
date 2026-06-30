@@ -141,6 +141,26 @@ export function AllocationResult({ batchId }: { batchId: string }) {
 
   return (
     <div className="flex flex-col gap-4">
+      {/* 상단 고정 액션 바 — 행이 많아도 스크롤 어디서나 다운로드 가능 */}
+      <div className="bg-background/95 supports-[backdrop-filter]:bg-background/80 sticky top-16 z-40 flex flex-wrap items-center justify-between gap-3 rounded-lg border px-4 py-3 shadow-sm backdrop-blur">
+        <div className="flex items-center gap-2 text-sm">
+          {allPassed ? (
+            <CheckCircle2 className="h-4 w-4 shrink-0 text-green-600" />
+          ) : (
+            <XCircle className="h-4 w-4 shrink-0 text-red-600" />
+          )}
+          <span className="text-muted-foreground">
+            {allPassed
+              ? "검증 3종이 모두 통과했습니다. 결과를 다운로드할 수 있습니다."
+              : "검증 불일치 항목이 있어 다운로드가 제한될 수 있습니다."}
+          </span>
+        </div>
+        <Button onClick={() => router.push(`/protected/result/${batchId}`)}>
+          다운로드
+          <ArrowRight className="ml-1 h-4 w-4" />
+        </Button>
+      </div>
+
       {/* 환율 출처 + 수동 오버라이드 */}
       <Card>
         <CardHeader>
@@ -215,7 +235,7 @@ export function AllocationResult({ batchId }: { batchId: string }) {
         <CardHeader>
           <CardTitle>품목별 안분·환산 ({data.rows.length}건)</CardTitle>
         </CardHeader>
-        <CardContent className="flex flex-col gap-4">
+        <CardContent>
           <div className="overflow-x-auto">
             <Table>
               <TableHeader>
@@ -255,18 +275,6 @@ export function AllocationResult({ batchId }: { batchId: string }) {
                 ))}
               </TableBody>
             </Table>
-          </div>
-
-          <div className="flex items-center justify-between gap-3">
-            <p className="text-muted-foreground text-sm">
-              {allPassed
-                ? "검증 3종이 모두 통과했습니다. 결과를 다운로드할 수 있습니다."
-                : "검증 불일치 항목이 있어 다운로드가 제한될 수 있습니다."}
-            </p>
-            <Button onClick={() => router.push(`/protected/result/${batchId}`)}>
-              다운로드
-              <ArrowRight className="ml-1 h-4 w-4" />
-            </Button>
           </div>
         </CardContent>
       </Card>

@@ -10,7 +10,7 @@ import { ThemeSwitcher } from "@/components/theme-switcher";
 export function SiteHeader() {
   return (
     <header className="bg-background/95 supports-[backdrop-filter]:bg-background/80 sticky top-0 z-50 w-full border-b backdrop-blur">
-      <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-6 px-5">
+      <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between gap-6 px-5">
         <div className="flex items-center gap-8">
           <BrandLogo href="/protected" size="sm" />
           <div className="hidden sm:block">

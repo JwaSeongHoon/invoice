@@ -174,8 +174,10 @@ export function MatchReview({ batchId }: { batchId: string }) {
                   key={row.declaration_item_id}
                   className={isReview ? "bg-yellow-500/10" : undefined}
                 >
-                  <TableCell className="font-medium">{row.model ?? "—"}</TableCell>
-                  <TableCell>{koreanName}</TableCell>
+                  <TableCell className="font-medium break-words whitespace-normal">
+                    {row.model ?? "—"}
+                  </TableCell>
+                  <TableCell className="break-words whitespace-normal">{koreanName}</TableCell>
                   <TableCell className="text-right">{row.decl_qty ?? "—"}</TableCell>
                   <TableCell className="text-right">{row.inv_qty ?? "—"}</TableCell>
                   <TableCell>
