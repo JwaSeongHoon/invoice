@@ -6,8 +6,10 @@ const nextConfig: NextConfig = {
   // pdfjs 워커는 동적 import라 트레이서가 못 잡아 서버리스 함수에서 누락된다.
   // ("Setting up fake worker failed: Cannot find module ...pdf.worker.mjs")
   // /api/ingest 함수 번들에 워커 파일을 명시적으로 포함시킨다.
+  // pdfjs를 사용하는 모든 라우트(ingest·ocr)에 워커를 포함시킨다.
   outputFileTracingIncludes: {
     "/api/ingest": ["./node_modules/pdfjs-dist/legacy/build/pdf.worker.mjs"],
+    "/api/ocr": ["./node_modules/pdfjs-dist/legacy/build/pdf.worker.mjs"],
   },
   images: {
     remotePatterns: [
