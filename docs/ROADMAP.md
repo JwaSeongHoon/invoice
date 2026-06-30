@@ -52,13 +52,13 @@
 
 | Phase | 명칭 | Task 수 | 상태 | 예상 기간 |
 |-------|------|---------|------|-----------|
-| Phase 1-A | 기반 인프라 (골격) | 4 (Task 001~004) | 대기 | 1~2주 |
-| Phase 1-B | 파일 처리 파이프라인 | 5 (Task 005~009) | 대기 | 2~3주 |
-| Phase 1-C | 매칭 로직 | 3 (Task 010~012) | 대기 | 1~2주 |
+| Phase 1-A | 기반 인프라 (골격) | 4 (Task 001~004) | ✅ 완료 | 1~2주 |
+| Phase 1-B | 파일 처리 파이프라인 | 5 (Task 005~009) | ✅ 완료 | 2~3주 |
+| Phase 1-C | 매칭 로직 | 3 (Task 010~012) | ✅ 완료 | 1~2주 |
 | Phase 1-D | 환율·안분·출력 | 5 (Task 013~017) | 대기 | 1~2주 |
 | Phase 1-E | 통합 검증 & 마무리 | 3 (Task 018~020) | 대기 | 1주 |
 
-**전체 진행률**: 0 / 20 Task 완료 (0%)
+**전체 진행률**: 12 / 20 Task 완료 (60%)
 
 **수용 기준 추적 (Acceptance Criteria)**
 
@@ -79,7 +79,7 @@
 
 > 전체 라우트 구조, 데이터베이스 스키마, 타입 정의, 인증 골격을 우선 완성하여 이후 Phase가 병렬로 진행될 수 있는 토대를 마련합니다.
 
-- **Task 001: 프로젝트 구조 및 라우팅 골격 설정** - 우선순위
+- ✅ **Task 001: 프로젝트 구조 및 라우팅 골격 설정** - 우선순위
   - 관련 기능: F020, F021 (페이지 골격)
   - 의존성: 없음
   - App Router 기반 전체 라우트 구조 생성: `/auth/login`, `/auth/sign-up`, `/protected`(배치 목록 홈), `/protected/upload`, `/protected/process/[batchId]`, `/protected/match/[batchId]`, `/protected/allocate/[batchId]`, `/protected/result/[batchId]`
@@ -88,7 +88,7 @@
   - Route Handler 빈 골격 생성: `/api/ingest`, `/api/ocr`, `/api/validate`, `/api/match`, `/api/match/[id]`, `/api/fx`, `/api/allocate`, `/api/export/[batchId]`
   - 완료 기준: 모든 라우트가 빈 화면으로 접근 가능, 미인증 시 `/auth/login` 리디렉션 동작, `npm run build` 통과
 
-- **Task 002: 타입 정의 및 데이터베이스 스키마 설계**
+- ✅ **Task 002: 타입 정의 및 데이터베이스 스키마 설계**
   - 관련 기능: 전체 (데이터 모델)
   - 의존성: Task 001
   - 8개 테이블 TypeScript 인터페이스 정의: `import_batch`, `settlement`, `declaration_item`, `inventory_item`, `item_match`, `allocation_result`, `fx_rate_cache`, `validation_log`
@@ -97,7 +97,7 @@
   - 마이그레이션 SQL 작성 (구현/적용은 Task 003): 8개 테이블 + 관계 + 인덱스
   - 완료 기준: `lib/types/` 타입 파일 완성, `npm run typecheck` 통과
 
-- **Task 003: Supabase 마이그레이션 및 RLS·Storage 설정**
+- ✅ **Task 003: Supabase 마이그레이션 및 RLS·Storage 설정**
   - 관련 기능: F022, 보안(RLS), 전체 데이터 모델
   - 의존성: Task 002
   - Supabase MCP `apply_migration`으로 8개 테이블 생성 (관계 FK 포함)
@@ -108,7 +108,7 @@
   - 완료 기준: `list_tables`로 8개 테이블 + RLS 확인, `get_advisors`(security) 경고 없음
   - **참고**: Supabase MCP 직접 호출로 검증 (Playwright 비대상)
 
-- **Task 004: 인증 흐름 및 import_batch CRUD 골격**
+- ✅ **Task 004: 인증 흐름 및 import_batch CRUD 골격**
   - 관련 기능: F020, F021, F001(배치 생성 골격)
   - 의존성: Task 003
   - 회원가입/로그인/로그아웃 폼 구현 (React Hook Form + Zod, Supabase Auth)
@@ -128,7 +128,7 @@
 
 > 업로드된 파일을 분류·파싱·OCR·검증하는 핵심 데이터 처리 파이프라인을 구축합니다. 각 Route Handler는 독립 검증 가능하도록 분리합니다.
 
-- **Task 005: 파일 업로드 UI 및 /api/ingest (PDF 분류 + 정산서 파싱)** - 우선순위
+- ✅ **Task 005: 파일 업로드 UI 및 /api/ingest (PDF 분류 + 정산서 파싱)** - 우선순위
   - 관련 기능: F001, F002, F003
   - 의존성: Task 004
   - 업로드 페이지 UI: PDF/xlsx 드래그&드롭 영역, 형식 검증(.pdf 4p 이상 / .xlsx 24컬럼 헤더), 필수 컬럼 검증(`품목코드`/`품목명`/`수량`/`단가`/`일자`), 파일 크기 제한(PDF 50MB, xlsx 10MB)
@@ -147,7 +147,7 @@
 
   - 완료 기준: 업로드→ingest 파이프라인 동작, settlement 필드 정확 추출, E2E 통과
 
-- **Task 006: /api/ingest (xlsx 파싱 + inventory_item 저장)**
+- ✅ **Task 006: /api/ingest (xlsx 파싱 + inventory_item 저장)**
   - 관련 기능: F006
   - 의존성: Task 005
   - 이카운트 24컬럼 xlsx 파싱: 헤더 행 이후 데이터 행별 추출
@@ -163,7 +163,7 @@
 
   - 완료 기준: 200행 xlsx 정상 파싱·저장, 통화/키 추출 정확, E2E 통과
 
-- **Task 007: /api/ocr (신고필증 Claude Vision OCR)**
+- ✅ **Task 007: /api/ocr (신고필증 Claude Vision OCR)**
   - 관련 기능: F004, F022(병렬 처리), AC-06
   - 의존성: Task 005
   - 신고필증 페이지를 sharp로 고해상도(2x 이상) 이미지 렌더링
@@ -181,7 +181,7 @@
 
   - 완료 기준: OCR JSON 스키마 정확, 저신뢰 플래그 동작, E2E 통과
 
-- **Task 008: /api/validate (㉟=㊶ 수량 검증)**
+- ✅ **Task 008: /api/validate (㉟=㊶ 수량 검증)**
   - 관련 기능: F005, AC-01
   - 의존성: Task 007
   - 검증식: `Σ(모든 페이지 qty_35) == Σ(모든 페이지 qty_41_total)`
@@ -197,7 +197,7 @@
 
   - 완료 기준: 검증 통과/실패 분기 정확, validation_log 기록, E2E 통과
 
-- **Task 009: 처리 진행 페이지 UI (진행률·로그·경고)**
+- ✅ **Task 009: 처리 진행 페이지 UI (진행률·로그·경고)**
   - 관련 기능: F002~F006 통합 표시, AC-06
   - 의존성: Task 005, 006, 007, 008
   - 단계별 진행률 표시 (PDF 분류 → OCR → 파싱 → 수량 검증 → xlsx 파싱), shadcn Progress/Badge 사용
@@ -217,7 +217,7 @@
 
 > 코드 매칭(1순위)과 AI 의미 매칭(2순위)으로 영문↔한글 품목을 연결하고, 애매한 건을 사람이 1클릭으로 확정하는 검토 단계를 구현합니다.
 
-- **Task 010: /api/match (코드 매칭 + AI 의미 매칭)** - 우선순위
+- ✅ **Task 010: /api/match (코드 매칭 + AI 의미 매칭)** - 우선순위
   - 관련 기능: F007, F008, F010, AC-02
   - 의존성: Task 008, 006
   - 코드 매칭 1순위: `정규화(품목코드 앞 10자리) == 정규화(모델번호)` (공백 제거·대문자 통일·특수문자 제거), 일치 시 `item_match`(method=`code`) + B/L번호 자동 연결
@@ -233,7 +233,7 @@
 
   - 완료 기준: 코드·AI 매칭 정확, 상태 분류 정확, E2E 통과
 
-- **Task 011: PATCH /api/match/:id (수동 확정)**
+- ✅ **Task 011: PATCH /api/match/:id (수동 확정)**
   - 관련 기능: F009
   - 의존성: Task 010
   - "확인요" 항목 수동 확정 처리 (method=`manual`, confirmed_by=user_id)
@@ -246,7 +246,7 @@
 
   - 완료 기준: 수동 확정 동작, confirmed_by 기록, E2E 통과
 
-- **Task 012: 매칭 검토 페이지 UI**
+- ✅ **Task 012: 매칭 검토 페이지 UI**
   - 관련 기능: F007~F010
   - 의존성: Task 010, 011
   - 매칭 결과 테이블 (영문 모델·한글 품목명·수량 비교·상태 배지)
