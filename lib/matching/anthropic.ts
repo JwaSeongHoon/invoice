@@ -93,6 +93,9 @@ ${groupList}
   const message = await client.messages.create({
     model: MATCH_MODEL,
     max_tokens: 4000,
+    // temperature 0: 같은 (모델, 후보) 입력에 대해 점수를 (거의) 고정해 실행 간 재현성을 확보한다.
+    // 자동확정 경계(임계값·격차)에 걸친 항목이 실행마다 확인요↔확정으로 뒤집히는 현상을 줄인다.
+    temperature: 0,
     output_config: { format: { type: "json_schema", schema: MATCH_JSON_SCHEMA } },
     messages: [{ role: "user", content: [{ type: "text", text: prompt }] }],
   });
