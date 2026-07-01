@@ -115,7 +115,7 @@ export interface MatchGroupCandidate {
   qty_sum: number;
   /** 그룹 입고 행 수 */
   row_count: number;
-  /** AI 유사도 점수 (재진입 fallback은 0) */
+  /** AI 유사도 점수 (캐시 미스로 재구성된 fallback 후보는 0) */
   score: number;
   /** 매칭 근거(한글) */
   reason: string;
@@ -124,8 +124,8 @@ export interface MatchGroupCandidate {
 /**
  * 매칭 검토 행 (POST /api/match 응답, F007~F010) — 신고 모델 그룹 단위
  *
- * candidates는 DB에 영속되지 않으며(item_match에 컬럼 없음), 최초 계산 시에만
- * AI 점수·근거가 포함된다. 페이지 재진입(멱등) 시 review 항목 후보는 미배정
+ * review 항목의 candidates(AI 점수·근거)는 match_candidate 테이블에 캐시되어,
+ * 페이지 재진입(멱등) 시 LLM 재호출 없이 복원된다. 캐시가 없는 과거 배치는 미배정
  * 입고 그룹으로 재구성되며 점수는 0으로 채워진다.
  */
 export interface MatchReviewItem {

@@ -292,6 +292,51 @@ export type Database = {
           },
         ];
       };
+      match_candidate: {
+        Row: {
+          batch_id: string;
+          created_at: string;
+          declaration_item_id: string;
+          id: string;
+          inventory_key: string;
+          reason: string;
+          score: number;
+        };
+        Insert: {
+          batch_id: string;
+          created_at?: string;
+          declaration_item_id: string;
+          id?: string;
+          inventory_key: string;
+          reason: string;
+          score: number;
+        };
+        Update: {
+          batch_id?: string;
+          created_at?: string;
+          declaration_item_id?: string;
+          id?: string;
+          inventory_key?: string;
+          reason?: string;
+          score?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "match_candidate_batch_id_fkey";
+            columns: ["batch_id"];
+            isOneToOne: false;
+            referencedRelation: "import_batch";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "match_candidate_declaration_item_id_fkey";
+            columns: ["declaration_item_id"];
+            isOneToOne: false;
+            referencedRelation: "declaration_item";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       profiles: {
         Row: {
           avatar_url: string | null;
