@@ -311,15 +311,19 @@ export async function POST(request: NextRequest) {
 
     const top = cands[0];
     const second = cands[1];
+    const grp = top ? baseGroupByKey.get(top.inventory_key) : undefined;
+    // 수량이 일치할 때만 자동확정한다. 이름 점수가 높아도 수량이 어긋나면(예: 신고 2432 vs
+    // 입고 32 — 실제로는 다른 입고 그룹과 합쳐져야 하는 경우) 오배정 위험이 크므로 확인요로 남긴다.
+    const status = grp ? compareQty(decl.qty_35, grp.qty_sum) : "mismatch";
     const autoConfirm =
       top !== undefined &&
+      grp !== undefined &&
+      status === "match" &&
       top.score >= AI_MATCH_THRESHOLD &&
       (second === undefined || top.score - second.score >= AI_MATCH_GAP_THRESHOLD);
 
-    const grp = top ? baseGroupByKey.get(top.inventory_key) : undefined;
     if (autoConfirm && grp) {
       usedKeys.add(grp.inventory_key);
-      const status = compareQty(decl.qty_35, grp.qty_sum);
       assignmentByDecl.set(decl.id, {
         inv_ids: grp.inventory_item_ids,
         status,
